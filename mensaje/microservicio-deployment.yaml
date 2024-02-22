@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.32.0 (765fde254)
+  labels:
+    io.kompose.service: microservicio
+  name: microservicio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: microservicio
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.32.0 (765fde254)
+      labels:
+        io.kompose.network/mensaje-default: "true"
+        io.kompose.service: microservicio
+    spec:
+      containers:
+        - image: microservicio
+          name: microservicio
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+      restartPolicy: Always
